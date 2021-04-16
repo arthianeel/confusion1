@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand } from 'reactstrap';
 import React, { Component } from 'react';
 import Main from './Components/MainComponent';
 import './App.css';
+import {BrowserRouter} from 'react-router-dom';
 import { DISHES } from './shared/dishes';
 
 
@@ -10,10 +11,12 @@ class App extends Component {
   
   render(){
   return (
+    <BrowserRouter>
     <div>
       
         <Main/>
     </div>
+    </BrowserRouter>
   );
   }
 }
