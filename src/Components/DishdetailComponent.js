@@ -5,7 +5,9 @@ import { Control, LocalForm, Errors} from 'react-redux-form';
 import {
   Button, Modal, ModalBody, ModalHeader, Label, Row, Col
 } from 'reactstrap';
-  
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+
 const required = (val) => val && val.length; //value > 0
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -142,7 +144,7 @@ class CommentForm extends Component {
 return (
     <div className="col-12 col-md-5 m-1">
   <Card>
-    <CardImg width="100%" src={dish.image} alt={dish.name} />
+    <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
     <CardBody> 
     <CardTitle>{dish.name}</CardTitle> 
     <CardText> {dish.description}</CardText>
@@ -158,13 +160,9 @@ return (
   }
 }
 const DishDetail = (props) => {
-
-  const dish = props.dish
-  
-  if (dish == null) {
-      return (<div></div>);
-  }
-
+   
+  const dish = props.dish;
+ 
 function RenderComments({comments, addComment, dishId}){
     if (comments == null) {
         return (<div></div>);
@@ -193,7 +191,25 @@ function RenderComments({comments, addComment, dishId}){
     </div>
     )
 }
-
+if (props.isLoading) {
+    return(
+        <div className="container">
+            <div className="row">            
+                <Loading />
+            </div>
+        </div>
+    );
+}
+else if (props.errMess) {
+    return(
+        <div className="container">
+            <div className="row">            
+                <h4>{props.errMess}</h4>
+            </div>
+        </div>
+    );
+}
+else if(props.dish!=null)
   return (
       <div className="container">
           <div className="row">
@@ -218,10 +234,9 @@ function RenderComments({comments, addComment, dishId}){
               addComment={props.addComment}
               dishId={props.dish.id} />
           </div>
-
-
       </div>
   )
 }
+
 
 export default DishDetail;
