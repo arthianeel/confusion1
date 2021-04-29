@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length; //value > 0
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -143,6 +144,11 @@ class CommentForm extends Component {
   {
 return (
     <div className="col-12 col-md-5 m-1">
+    <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
   <Card>
     <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
     <CardBody> 
@@ -150,6 +156,7 @@ return (
     <CardText> {dish.description}</CardText>
     </CardBody>
   </Card>
+  </FadeTransform>
   </div>
 );
   }
@@ -169,6 +176,7 @@ function RenderComments({comments, postComment, dishId}){
     }
     const cmnt = comments.map(comment => {
         return (
+            <Fade in>
             <li key={comment.id}>
                 <p>{comment.comment}</p>
                 <p>-- {comment.author},
@@ -180,13 +188,17 @@ function RenderComments({comments, postComment, dishId}){
                 }).format(new Date(Date.parse(comment.date)))}
                 </p>
             </li>
+            </Fade>
         )
     })
     return(<div className='col-12 col-md-5 m-1'>
         <h4>Comments</h4>
         <ul className='list-unstyled'>
+        <Stagger in>
                     {cmnt}
+                    </Stagger>
                 </ul>
+       
                 <CommentForm dishId={dishId} postComment={postComment} comments={comments}/>
     </div>
     )
